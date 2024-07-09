@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import './sideBar.css';
 
 const SideBar = ({ data })  => {
@@ -16,7 +17,8 @@ const SideBar = ({ data })  => {
                             <p>{pick.author}</p>
                         </div>
                         <div className="text">
-                            <h2>{pick.title}</h2>
+                            <Link to={`/blog/${pick._id}`}><h2>{pick.title}</h2></Link>
+                            {/* <h2>{pick.title}</h2> */}
                         </div>
                     </div>
                 ))}
@@ -34,7 +36,8 @@ const SideBar = ({ data })  => {
                     <div key={follow._id} className="follow">
                         <img src={follow.profilePic} alt={follow.name} />
                         <div className="text">
-                            <h2><strong>{follow.name}</strong></h2>
+                            <Link to={`/author-profile/${follow._id}/${follow.name}`}><h2><strong>{follow.name}</strong></h2></Link>
+                            {/* <h2><strong>{follow.name}</strong></h2> */}
                             <p>{follow.bio}</p>
                         </div>
                         <button>Follow</button>

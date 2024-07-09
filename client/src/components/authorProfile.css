@@ -1,0 +1,10 @@
+.profile {
+    max-width: 1360px;
+    margin: auto;
+}
+
+.blog-wrapper {
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+}

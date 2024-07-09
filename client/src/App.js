@@ -7,6 +7,7 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import FullBlog from './components/FullBlog';
 import Profile from './components/Profile';
+import AuthorProfile from './components/AuthorProfile';
 
 const router = createBrowserRouter([
   { path: "/", element: <HomePage /> },
@@ -15,7 +16,8 @@ const router = createBrowserRouter([
   { path: "/login", element: <Login />},
   { path: "/signup", element: <Signup />},
   { path: "/blog/:id", element: <FullBlog />},
-  { path: "/profile", element: <Profile />}
+  { path: "/profile", element: <Profile />},
+  { path: "/author-profile/:authorId/:authorName", element: <AuthorProfile />}
 ]);
 
 function App() {

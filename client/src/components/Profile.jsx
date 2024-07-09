@@ -1,3 +1,5 @@
+// Profile of the logged in user
+
 import axios from 'axios';
 import './profile.css';
 import TopBar from "./TopBar";
@@ -8,6 +10,7 @@ import DeleteModal from './DeleteModal';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+
 
 const Profile = () => {
     const author = useSelector((state) => state.auth.user);
