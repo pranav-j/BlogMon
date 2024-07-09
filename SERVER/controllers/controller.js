@@ -13,6 +13,7 @@ const { uploadFileToS3 } = require('../utils/s3Utils');
 const { Blog } = require('../models/BlogModel');
 const User = require('../models/UserModel');
 const Comment = require('../models/CommentModel');
+const { title } = require('process');
 
 // SIGNUP------------------------------------------------------------------------------------------------
 
@@ -90,7 +91,60 @@ const login = async(req, res) => {
         console.log('Login failed...............');
         res.status(500).json({ error: 'Failed to login' });
     }
-}
+};
+
+const getSideBarData = async(req, res) => {
+  try {
+    const editorsPicks = await Blog.aggregate([
+      { $sort: {date: -1} },
+      { $limit: 3 },
+      { 
+        $lookup: {
+          from: 'uzers',
+          localField: 'author_id',
+          foreignField: '_id',
+          as: 'author'
+        }
+      },
+      { $unwind: '$author' },
+      {
+        $project: {
+          id: '$_id',
+          title: 1,
+          author: '$author.name',
+          author_id: '$author._id',
+          image: { $ifNull: ['$author.profilePic', 'https://robohash.org/you.png?set=set5']}
+        }
+      }
+    ]);
+
+    const recommendedTopics = [
+      'Data Science',
+      'Self Improvement',
+      'Writing',
+      'Relationships',
+      'Cryptocurrency',
+      'Productivity'
+    ];
+
+    // const whoToFollow = await User.find().sort({ createdAt: -1 }).limit(2);
+    const whoToFollow = await User.find()
+    .sort({ createdAt: -1 })
+    .limit(2)
+    .select('_id name bio profilePic');
+
+    const sideBarData = {
+      editorsPicks,
+      recommendedTopics,
+      whoToFollow
+    };
+
+    res.status(200).json(sideBarData);
+  } catch (error) {
+    console.error('Error fetching sidebar data:', error);
+    res.status(500).json({ error: 'Failed to fetch sidebar data' });
+  }
+};
 
 // -------------------------------------------------------------------------------------------------------------
 // Set storage engine------------------------------------------------------------------------------------------------
@@ -452,4 +506,5 @@ module.exports = {
     editBlog,
     signup,
     login,
+    getSideBarData,
 };

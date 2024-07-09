@@ -9,6 +9,7 @@ import axios from "axios";
 const HomePage = () => {
 
   const [ blogs, setBlogs ] = useState([]);
+  const [ sideBarData, setSideBarData ] = useState(null);
   const [ selectedCategory, setSelectedCategory ] = useState('For you');
 
   const fetchBlogs = async () =>{
@@ -30,57 +31,67 @@ const HomePage = () => {
     }
   };
 
+  const fetchSideBarData = async () => {
+    try {
+      const response = await axios.get('http://localhost:3535/sidebar-data');
+      setSideBarData(response.data);
+    } catch (error) {
+      console.error('Error fetching sidebar data:', error);
+    }
+  }
+
   useEffect(() => {
-    fetchBlogs();
+    fetchSideBarData();
+    fetchBlogs();    
   }, [selectedCategory]);
 
 
-    const sideBarData = {
-        "editorsPicks": [
-          {
-            "id": 1,
-            "author": "Torsten Walbaum",
-            "category": "Towards Data Science",
-            "title": "What 10 Years at Uber, Meta and Startups Taught Me About Data Analytics",
-            "image": "https://robohash.org/you.png?set=set5"
-          },
-          {
-            "id": 2,
-            "author": "Jeffery Smith",
-            "title": "The Impact of Remote Work on My Children",
-            "image": "https://robohash.org/you.png?set=set8"
-          },
-          {
-            "id": 3,
-            "author": "Grace Loh Prasad",
-            "category": "Asian American Book Club",
-            "title": "It's OK If Your Writing Isn't for Everyone",
-            "image": "https://robohash.org/you.png?set=set6"
-          }
-        ],
-        "recommendedTopics": [
-          "Data Science",
-          "Self Improvement",
-          "Writing",
-          "Relationships",
-          "Cryptocurrency",
-          "Productivity"
-        ],
-        "whoToFollow": [
-          {
-            "id": 1,
-            "name": "Kevin Beaumont",
-            "description": "Everything here is my personal work and opinions.",
-            "image": "https://robohash.org/you.png?set=set9"
-          },
-          {
-            "id": 2,
-            "name": "Ignacio de Gregorio",
-            "description": "I break down frontier AI systems in easy-to-understand ways.",
-            "image": "https://robohash.org/you.png?set=set10"
-          }
-        ]
-      }
+    // const sideBarData = {
+    //     "editorsPicks": [
+    //       {
+    //         "id": 1,
+    //         "author": "Torsten Walbaum",
+    //         "category": "Towards Data Science",
+    //         "title": "What 10 Years at Uber, Meta and Startups Taught Me About Data Analytics",
+    //         "image": "https://robohash.org/you.png?set=set5"
+    //       },
+    //       {
+    //         "id": 2,
+    //         "author": "Jeffery Smith",
+    //         "title": "The Impact of Remote Work on My Children",
+    //         "image": "https://robohash.org/you.png?set=set8"
+    //       },
+    //       {
+    //         "id": 3,
+    //         "author": "Grace Loh Prasad",
+    //         "category": "Asian American Book Club",
+    //         "title": "It's OK If Your Writing Isn't for Everyone",
+    //         "image": "https://robohash.org/you.png?set=set6"
+    //       }
+    //     ],
+    //     "recommendedTopics": [
+    //       "Data Science",
+    //       "Self Improvement",
+    //       "Writing",
+    //       "Relationships",
+    //       "Cryptocurrency",
+    //       "Productivity"
+    //     ],
+    //     "whoToFollow": [
+    //       {
+    //         "_id": 1,
+    //         "name": "Kevin Beaumont",
+    //         "bio": "Everything here is my personal work and opinions.",
+    //         "profilePic": "https://robohash.org/you.png?set=set9"
+    //       },
+    //       {
+    //         "_id": 2,
+    //         "name": "Ignacio de Gregorio",
+    //         "bio": "I break down frontier AI systems in easy-to-understand ways.",
+    //         "profilePic": "https://robohash.org/you.png?set=set10"
+    //       }
+    //     ]
+    //   }
       
 
     return(
@@ -93,7 +104,8 @@ const HomePage = () => {
                         <ArticleCard key={blog._id} blog={blog}/>
                     ))}
                 </div>
-                <SideBar data = {sideBarData} />
+                {/* <SideBar data = {sideBarData} /> */}
+                {sideBarData && <SideBar data={sideBarData} />}
             </div>
         </div>
     )

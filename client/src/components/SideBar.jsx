@@ -31,11 +31,11 @@ const SideBar = ({ data })  => {
             <h3>Who to follow</h3>
             <div className="who-to-follow">
                 {whoToFollow.map(follow => (
-                    <div key={follow.id} className="follow">
-                        <img src={follow.image} alt={follow.name} />
+                    <div key={follow._id} className="follow">
+                        <img src={follow.profilePic} alt={follow.name} />
                         <div className="text">
                             <h2><strong>{follow.name}</strong></h2>
-                            <p>{follow.description}</p>
+                            <p>{follow.bio}</p>
                         </div>
                         <button>Follow</button>
                     </div>

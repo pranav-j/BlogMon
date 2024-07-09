@@ -17,12 +17,15 @@ const {
     createBlog, 
     editBlog, 
     signup,
-    login 
+    login,
+    getSideBarData
 } = require('../controllers/controller.js');
 
 const { upload } = require('../utils/s3Utils.js');
 
 router.get('/get-blogs', getBlogs);
+
+router.get('/sidebar-data', getSideBarData);
 
 router.get('/get-blogs/:author_id', getBlogsByAuthor);
 
