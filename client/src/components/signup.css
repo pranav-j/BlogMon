@@ -1,0 +1,14 @@
+.signup {
+    display: flex;
+    margin: 100px;
+}
+
+.signup form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.signup input {
+    border-radius: 5px;
+}

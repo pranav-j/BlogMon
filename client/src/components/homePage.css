@@ -1,0 +1,18 @@
+.home-page {   
+  margin: 0 auto;
+}
+
+.home-page {
+  border: solid 1px #F2F2F2;
+  max-width: 1336px;
+}
+
+.main-container {
+  display: flex;
+}
+
+.article-cards {
+  border-right: solid 1px #F2F2F2;
+  max-width: 900px;
+  margin-left: 0px
+}

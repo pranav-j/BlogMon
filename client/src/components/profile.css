@@ -1,0 +1,26 @@
+.profile {
+    max-width: 1360px;
+    margin: auto;
+}
+
+.blog-wrapper {
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+}
+
+/* .blog-wrapper .blog-wrapper {
+    max-width: 200px;
+} */
+
+.blog-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 70px;
+    margin-left: 0px;
+}
+
+.blog-actions button {
+    width: 60px;
+}

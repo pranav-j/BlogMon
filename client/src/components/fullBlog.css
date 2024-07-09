@@ -1,0 +1,59 @@
+.full-blog {
+    max-width: 900px;
+    margin: auto;
+}
+
+.full-blog img {
+    max-width: 500px;
+    max-height: 500px;
+}
+
+.full-blog h1 {
+    padding: 50px 0px;
+}
+
+.full-blog h2 {
+    padding-bottom: 15px;
+}
+
+.replys {
+    margin-left: 30px;
+}
+
+.add-reply {
+    margin-left: 30px;
+}
+
+.add-comment textarea {
+    width: 70%;
+    height: 100px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    resize: vertical;  /* Allow vertical resizing but prevent horizontal resizing */
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.add-comment {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.add-reply textarea {
+    width: 70%;
+    height: 100px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    resize: vertical;  /* Allow vertical resizing but prevent horizontal resizing */
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.add-reply {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}

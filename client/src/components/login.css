@@ -1,0 +1,17 @@
+.login {
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+    /* margin: 100px; */
+    margin: auto;
+}
+
+.login form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.login input {
+    border-radius: 5px;
+}

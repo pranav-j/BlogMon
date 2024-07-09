@@ -1,0 +1,28 @@
+.category-bar {
+    display: flex;
+    height: 50px;
+    align-items: center;
+    border-bottom: solid 1px #F2F2F2;
+    overflow-x: auto;
+    white-space: nowrap;
+    /* justify-content: space-around; */
+    gap: 10px;
+}
+
+.category-bar::-webkit-scrollbar {
+    display: none;
+}
+
+.category-bar div {
+    padding: 13px 25px;
+}
+
+.category-item {
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.category-item.selected {
+    font-weight: bold;
+    border-bottom: 2px solid #007BFF;
+  }
