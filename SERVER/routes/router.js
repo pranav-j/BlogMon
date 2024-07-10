@@ -18,13 +18,17 @@ const {
     editBlog, 
     signup,
     login,
+    logout,
     getSideBarData
 } = require('../controllers/controller.js');
+
+const { userAuth } = require('../middlewares/userAuth.js')
 
 const { upload } = require('../utils/s3Utils.js');
 
 router.get('/get-blogs', getBlogs);
 
+// router.get('/sidebar-data', userAuth, getSideBarData);       //For testing userAuth
 router.get('/sidebar-data', getSideBarData);
 
 router.get('/get-blogs/:author_id', getBlogsByAuthor);
@@ -33,24 +37,26 @@ router.get('/get-blogs-by-category/:category', getBlogsByCategory);
 
 router.get('/blog/:id', getBlogById);
 
-router.put('/edit-blog/:id', editBlog);
+router.put('/edit-blog/:id', userAuth, editBlog);
 
-router.post('/like-blog/:id', likeBlog);
+router.post('/like-blog/:id', userAuth, likeBlog);
 
-router.post('/add-comment', addComment);
+router.post('/add-comment', userAuth, addComment);
 
-router.post('/add-coment-reply', addComentReply);
+router.post('/add-coment-reply', userAuth, addComentReply);
 
 router.get('/get-comments/:blogId', getComments);
 
-router.delete('/blog/:id', deleteBlog);
+router.delete('/blog/:id', userAuth, deleteBlog);
 
-router.post('/content-img-upload', upload.single('imageInsertion'), uploadBlogImage);
+router.post('/content-img-upload', userAuth, upload.single('imageInsertion'), uploadBlogImage);
 
-router.post('/create-article', createBlog);
+router.post('/create-article', userAuth, createBlog);
 
 router.post('/signup', upload.single('profilePic'), signup);
 
 router.post('/login', login);
+
+router.post('/logout', logout);
 
 module.exports = router;

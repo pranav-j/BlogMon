@@ -33,7 +33,7 @@ const HomePage = () => {
 
   const fetchSideBarData = async () => {
     try {
-      const response = await axios.get('http://localhost:3535/sidebar-data');
+      const response = await axios.get('http://localhost:3535/sidebar-data', { withCredentials: true });
       setSideBarData(response.data);
     } catch (error) {
       console.error('Error fetching sidebar data:', error);

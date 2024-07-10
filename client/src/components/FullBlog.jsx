@@ -47,8 +47,8 @@ const FullBlog = () => {
 
     const likeHandler = async() => {
         try {
-            // const response = await axios.post(`/like-blog/${id}`, { userId: user.id });
-            const response = await axios.post(`http://localhost:3535/like-blog/${id}`, { userId: user.id });
+            // const response = await axios.post(`/like-blog/${id}`, { userId: user.id }, { withCredentials: true });
+            const response = await axios.post(`http://localhost:3535/like-blog/${id}`, { userId: user.id }, { withCredentials: true });
 
             setBlog(response.data);
             console.log(response.data);
@@ -64,12 +64,16 @@ const FullBlog = () => {
         }
         try {
             // const response = await axios.post('/add-comment', {
-            const response = await axios.post('http://localhost:3535/add-comment', {
+            const response = await axios.post('http://localhost:3535/add-comment', 
+            {
                 blogId: id,
                 userId: user.id,
                 userName: user.name,
                 content: newComment
-            });
+            },
+        {
+            withCredentials: true
+        });
             setComments([...comments, response.data]);
             setNewComment('');
         } catch (error) {
@@ -85,12 +89,16 @@ const FullBlog = () => {
 
         try {
             // const response = await axios.post('/add-coment-reply', {
-            const response = await axios.post('http://localhost:3535/add-coment-reply', {
+            const response = await axios.post('http://localhost:3535/add-coment-reply', 
+            {
                 commentId: replyToCommentId,
                 userId: user.id,
                 userName: user.name,
                 content: newReply
-            });
+            },
+        {
+            withCredentials: true
+        });
             setComments(comments.map(comment => (
                 comment._id === replyToCommentId ? response.data : comment
             )));

@@ -93,6 +93,11 @@ const login = async(req, res) => {
     }
 };
 
+const logout = (req, res) => {
+  res.clearCookie('token');
+  res.json({ message: 'Logged out successfully' });
+};
+
 const getSideBarData = async(req, res) => {
   try {
     const editorsPicks = await Blog.aggregate([
@@ -506,5 +511,6 @@ module.exports = {
     editBlog,
     signup,
     login,
+    logout,
     getSideBarData,
 };

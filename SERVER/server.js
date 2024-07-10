@@ -1,18 +1,16 @@
 require('./config/dbConfig'); // this is IMPORTANT, it makes the DB connect
 
 const express = require('express');
-// const multer = require('multer');
 const cors = require('cors');
-// const path = require('path');
 const routes = require('./routes/router.js')
 
-
-// const { Blog } = require('./models/BlogModel');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 
 app.use(express.json());
 
+app.use(cookieParser());
 
 
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));

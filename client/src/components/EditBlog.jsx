@@ -50,8 +50,8 @@ const EditBlog = () =>{
           try {
             // const response = await axios.post('/content-img-upload', formData, {
             const response = await axios.post('http://localhost:3535/content-img-upload', formData, {
-
               headers: { 'Content-Type': 'multipart/form-data' },
+              withCredentials: true
             });
     
             const quill = quillRef.current.getEditor();
@@ -89,7 +89,7 @@ const EditBlog = () =>{
             category,
             author_id: user.id,
             author_name: user.name,
-          });
+          }, { withCredentials: true });
     
           navigate('/profile');
         } catch (error) {

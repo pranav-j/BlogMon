@@ -1,4 +1,5 @@
 import React from "react";
+import axios from 'axios';
 import "./topBar.css"
 import logo from '../images/BlogMon.webp';
 
@@ -11,8 +12,14 @@ const TopBar = () => {
     const user = useSelector((state) => state.auth.user);
     const dispach = useDispatch();
 
-    const handleLogout = () => {
-        dispach(clearUser());
+    const handleLogout = async () => {
+        try {
+            // await axios.post('/logout');
+            await axios.post('http://localhost:3535/logout', {}, { withCredentials: true });
+            dispach(clearUser());
+        } catch (error) {
+            console.error('Failed to logout', error);
+        }        
     };
 
     return(
@@ -49,4 +56,3 @@ const TopBar = () => {
 }
 
 export default TopBar;
-
