@@ -23,13 +23,12 @@ const SideBar = ({ data })  => {
                     </div>
                 ))}
             </div>
-            <h3>Recommended topics</h3>
+            {/* <h3>Recommended topics</h3>
             <div className="topics">
                 {recommendedTopics.map((topic, index) => (
                     <button key={index}>{topic}</button>
                 ))}
-                {/* <a href="#">See more topics</a> */}
-            </div>
+            </div> */}
             <h3>Who to follow</h3>
             <div className="who-to-follow">
                 {whoToFollow.map(follow => (

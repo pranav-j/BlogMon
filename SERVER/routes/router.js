@@ -19,7 +19,8 @@ const {
     signup,
     login,
     logout,
-    getSideBarData
+    getSideBarData,
+    searchBlogs,
 } = require('../controllers/controller.js');
 
 const { userAuth } = require('../middlewares/userAuth.js')
@@ -58,5 +59,7 @@ router.post('/signup', upload.single('profilePic'), signup);
 router.post('/login', login);
 
 router.post('/logout', logout);
+
+router.get('/search-blogs', searchBlogs)
 
 module.exports = router;

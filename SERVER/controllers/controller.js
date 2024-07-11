@@ -100,8 +100,31 @@ const logout = (req, res) => {
 
 const getSideBarData = async(req, res) => {
   try {
+    // const editorsPicks = await Blog.aggregate([
+    //   { $sort: {date: -1} },
+    //   { $limit: 3 },
+    //   { 
+    //     $lookup: {
+    //       from: 'uzers',
+    //       localField: 'author_id',
+    //       foreignField: '_id',
+    //       as: 'author'
+    //     }
+    //   },
+    //   { $unwind: '$author' },
+    //   {
+    //     $project: {
+    //       id: '$_id',
+    //       title: 1,
+    //       author: '$author.name',
+    //       author_id: '$author._id',
+    //       image: { $ifNull: ['$author.profilePic', 'https://robohash.org/you.png?set=set5']}
+    //     }
+    //   }      
+    // ]);
+
     const editorsPicks = await Blog.aggregate([
-      { $sort: {date: -1} },
+      { $sort: { date: -1 } },
       { $limit: 3 },
       { 
         $lookup: {
@@ -118,10 +141,17 @@ const getSideBarData = async(req, res) => {
           title: 1,
           author: '$author.name',
           author_id: '$author._id',
-          image: { $ifNull: ['$author.profilePic', 'https://robohash.org/you.png?set=set5']}
+          image: {
+            $cond: {
+              if: { $or: [{ $eq: ['$author.profilePic', null] }, { $eq: ['$author.profilePic', ''] }, { $not: ['$author.profilePic'] }] },
+              then: 'https://robohash.org/you.png?set=set5',
+              else: '$author.profilePic'
+            }
+          }
         }
       }
     ]);
+    
 
     const recommendedTopics = [
       'Data Science',
@@ -133,10 +163,15 @@ const getSideBarData = async(req, res) => {
     ];
 
     // const whoToFollow = await User.find().sort({ createdAt: -1 }).limit(2);
-    const whoToFollow = await User.find()
+    let whoToFollow = await User.find()
     .sort({ createdAt: -1 })
     .limit(2)
     .select('_id name bio profilePic');
+
+    whoToFollow = whoToFollow.map(user => ({
+      ...user._doc,
+      profilePic: user.profilePic || 'https://robohash.org/you.png?set=set5'
+    }));
 
     const sideBarData = {
       editorsPicks,
@@ -206,42 +241,42 @@ const getSideBarData = async(req, res) => {
 // -------------------------------------------------------------------------------------------------------------
 // S3 SETUP-----------------------------------------------------------------------------------------------------
 
-const s3 = new S3Client({
-  credentials: {
-    accessKeyId: process.env.accessKeyId,
-    secretAccessKey: process.env.secretAccessKey
-  }
-})
+// const s3 = new S3Client({
+//   credentials: {
+//     accessKeyId: process.env.accessKeyId,
+//     secretAccessKey: process.env.secretAccessKey
+//   }
+// })
 
-const storage = multer.memoryStorage();
-const upload = multer({
-  storage: storage,
-  fileFilter: (req, file, cb) => {
-    checkFileType(file, cb);
-  }
-});
+// const storage = multer.memoryStorage();
+// const upload = multer({
+//   storage: storage,
+//   fileFilter: (req, file, cb) => {
+//     checkFileType(file, cb);
+//   }
+// });
 
-// Check file type
-function checkFileType(file, cb) {
-  const filetypes = /jpeg|jpg|png|gif/;
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = filetypes.test(file.mimetype);
+// // Check file type
+// function checkFileType(file, cb) {
+//   const filetypes = /jpeg|jpg|png|gif/;
+//   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+//   const mimetype = filetypes.test(file.mimetype);
 
-  if (mimetype && extname) {
-    return cb(null, true);
-  } else {
-    cb('Error: Images Only!');
-  }
-};
+//   if (mimetype && extname) {
+//     return cb(null, true);
+//   } else {
+//     cb('Error: Images Only!');
+//   }
+// };
 
 
-// Generate unique file name
-function generateUniqueFileName(originalName) {
-  const ext = path.extname(originalName);
-  const baseName = path.basename(originalName, ext);
-  const uniqueSuffix = crypto.randomBytes(8).toString('hex');
-  return `${baseName}-${uniqueSuffix}${ext}`;
-}
+// // Generate unique file name
+// function generateUniqueFileName(originalName) {
+//   const ext = path.extname(originalName);
+//   const baseName = path.basename(originalName, ext);
+//   const uniqueSuffix = crypto.randomBytes(8).toString('hex');
+//   return `${baseName}-${uniqueSuffix}${ext}`;
+// }
 
 // UPLOAD IMAGE IN BLOG
 // const uploadImage = async (req, res) => {
@@ -265,7 +300,7 @@ function generateUniqueFileName(originalName) {
 //   }
 // };
 
-// UPLOAD IMAGE IN BLOG------------------------------------------------------------------------------------------------
+// UPLOAD IMAGE IN BLOG USING S3------------------------------------------------------------------------------------------------
 
 const uploadBlogImage = async (req, res) => {
   try {
@@ -493,24 +528,40 @@ const getComments = async(req, res) => {
   }
 };
 
+// SEARCH ---------------------------------------------------------------------------------------------------------------------
+
+const searchBlogs = async(req, res) => {
+  const { query } = req.query;
+  try {
+    const searchResults = await Blog.find({
+      $text:{ $search: query}
+    });
+    console.log(`Searched for ${query}...............`);
+    res.status(200).json(searchResults);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch blogs' });
+  }
+};
+
 // ------------------------------------------------------------------------------------------------------------
 
 module.exports = {
-    getBlogs,
-    getBlogById,
-    getBlogsByCategory,
-    deleteBlog,
-    likeBlog,
-    addComment,
-    addComentReply,
-    getComments,
-    getBlogsByAuthor,
-    uploadBlogImage,
-    // uploadImage,
-    createBlog,
-    editBlog,
-    signup,
-    login,
-    logout,
-    getSideBarData,
+  getBlogs,
+  getBlogById,
+  getBlogsByCategory,
+  deleteBlog,
+  likeBlog,
+  addComment,
+  addComentReply,
+  getComments,
+  getBlogsByAuthor,
+  uploadBlogImage,
+  // uploadImage,
+  createBlog,
+  editBlog,
+  signup,
+  login,
+  logout,
+  getSideBarData,
+  searchBlogs,
 };

@@ -47,6 +47,7 @@ const FullBlog = () => {
 
     const likeHandler = async() => {
         try {
+            console.log('USER ID.............', user.id);
             // const response = await axios.post(`/like-blog/${id}`, { userId: user.id }, { withCredentials: true });
             const response = await axios.post(`http://localhost:3535/like-blog/${id}`, { userId: user.id }, { withCredentials: true });
 

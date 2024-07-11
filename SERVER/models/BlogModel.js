@@ -32,6 +32,7 @@ const BlogSchema = new mongoose.Schema({
   },
 });
 
+BlogSchema.index({ title: 'text', content: 'text' }); // Create text index
 
 const Blog = mongoose.model('Blog', BlogSchema);
 module.exports = { Blog };

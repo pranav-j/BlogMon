@@ -4,6 +4,7 @@ import CategoryBar from "./CategoryBar";
 import SideBar from "./SideBar";
 import "./homePage.css"
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
 
 const HomePage = () => {
@@ -11,20 +12,26 @@ const HomePage = () => {
   const [ blogs, setBlogs ] = useState([]);
   const [ sideBarData, setSideBarData ] = useState(null);
   const [ selectedCategory, setSelectedCategory ] = useState('For you');
+  const searchTerm = useSelector((state) => state.search.searchTerm);
+
+  console.log("searchTerm.........", searchTerm);
 
   const fetchBlogs = async () =>{
     try {
-      // let url = `/get-blogs`;
-      let url = "http://localhost:3535/get-blogs";
-      
-      // console.log(url);
-      // console.log(selectedCategory);
-      if(selectedCategory !== 'For you') {
-        url = `http://localhost:3535/get-blogs-by-category/${selectedCategory}`;
-        // url = `/get-blogs-by-category/${selectedCategory}`;
+      let url = '';
+      if(searchTerm) {
+        // url = `/search-blogs?query=${searchTerm}`;
+        url = `http://localhost:3535/search-blogs?query=${searchTerm}`;
+      } else {
+        // let url = `/get-blogs`;
+        url = "http://localhost:3535/get-blogs";
+
+        if(selectedCategory !== 'For you') {
+          // url = `/get-blogs-by-category/${selectedCategory}`;
+          url = `http://localhost:3535/get-blogs-by-category/${selectedCategory}`;
+        }
       }
       const response = await axios.get(url);
-      // console.log('response.data :', response.data);
       setBlogs(response.data);
     } catch (error) {
       console.error('Error fetching blogs:', error);
@@ -33,6 +40,7 @@ const HomePage = () => {
 
   const fetchSideBarData = async () => {
     try {
+      // const response = await axios.get('/sidebar-data', { withCredentials: true });
       const response = await axios.get('http://localhost:3535/sidebar-data', { withCredentials: true });
       setSideBarData(response.data);
     } catch (error) {
@@ -43,7 +51,7 @@ const HomePage = () => {
   useEffect(() => {
     fetchSideBarData();
     fetchBlogs();    
-  }, [selectedCategory]);
+  }, [selectedCategory, searchTerm]);
 
 
     // const sideBarData = {

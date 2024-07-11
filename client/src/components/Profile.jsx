@@ -44,7 +44,7 @@ const Profile = () => {
 
     const handleDelete = async () => {
         try {
-            // const deleted = await axios.delete(`/blog/${blogToDelete}`);
+            // const deleted = await axios.delete(`/blog/${blogToDelete}`,
             const deleted = await axios.delete(`http://localhost:3535/blog/${blogToDelete}`,
                 {
                     withCredentials: true
