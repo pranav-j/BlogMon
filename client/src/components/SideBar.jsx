@@ -11,11 +11,12 @@ const SideBar = ({ data })  => {
             <div className="editors-picks">
                 {editorsPicks.map(pick => (
                     <div key={pick.id} className="pick">
-
-                        <div className="author">
-                            <img src={pick.image} alt={pick.author} />
-                            <p>{pick.author}</p>
-                        </div>
+                        <Link to={`/author-profile/${pick.author_id}/${pick.author}`}>
+                            <div className="author">                               
+                                <img src={pick.image} alt={pick.author} />
+                                <p>{pick.author}</p>                               
+                            </div>
+                        </Link>
                         <div className="text">
                             <Link to={`/blog/${pick._id}`}><h2>{pick.title}</h2></Link>
                             {/* <h2>{pick.title}</h2> */}

@@ -362,7 +362,29 @@ const editBlog = async (req, res) => {
 
 const getBlogs = async (req, res) => {
     try {
-        const blogs = await Blog.find();
+        // const blogs = await Blog.find();
+
+        const blogs = await Blog.aggregate([
+          {
+              $lookup: {
+                  from: 'comments', // Name of the comments collection
+                  localField: '_id',
+                  foreignField: 'blogId',
+                  as: 'comments'
+              }
+          },
+          {
+              $addFields: {
+                  commentsCount: { $size: '$comments' }
+              }
+          },
+          {
+              $project: {
+                  comments: 0 // Exclude the comments array
+              }
+          }
+      ]);
+
         console.log('Home page rendered...............');
         res.status(200).json(blogs);
     } catch (error) {
@@ -512,7 +534,7 @@ const addComentReply = async (req, res) => {
     console.error('Error adding reply:', error);
     res.status(500).json({ error: 'Failed to add reply' });
   }
-}
+};
 
 // GET COMMENT -------------------------------------------------------------------------------------------------------------
 

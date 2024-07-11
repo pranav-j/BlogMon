@@ -25,6 +25,8 @@ const {
 
 const { userAuth } = require('../middlewares/userAuth.js')
 
+const { validateLogin, validateSignup, validateBlog, validateAddComment, validateAddCommentReply } = require('../middlewares/validators.js')
+
 const { upload } = require('../utils/s3Utils.js');
 
 router.get('/get-blogs', getBlogs);
@@ -38,13 +40,13 @@ router.get('/get-blogs-by-category/:category', getBlogsByCategory);
 
 router.get('/blog/:id', getBlogById);
 
-router.put('/edit-blog/:id', userAuth, editBlog);
+router.put('/edit-blog/:id', userAuth, validateBlog, editBlog);
 
 router.post('/like-blog/:id', userAuth, likeBlog);
 
-router.post('/add-comment', userAuth, addComment);
+router.post('/add-comment', userAuth, validateAddComment, addComment);
 
-router.post('/add-coment-reply', userAuth, addComentReply);
+router.post('/add-coment-reply', userAuth, validateAddCommentReply, addComentReply);
 
 router.get('/get-comments/:blogId', getComments);
 
@@ -52,11 +54,11 @@ router.delete('/blog/:id', userAuth, deleteBlog);
 
 router.post('/content-img-upload', userAuth, upload.single('imageInsertion'), uploadBlogImage);
 
-router.post('/create-article', userAuth, createBlog);
+router.post('/create-article', userAuth, validateBlog, createBlog);
 
-router.post('/signup', upload.single('profilePic'), signup);
+router.post('/signup', upload.single('profilePic'), validateSignup, signup);
 
-router.post('/login', login);
+router.post('/login', validateLogin, login);
 
 router.post('/logout', logout);
 

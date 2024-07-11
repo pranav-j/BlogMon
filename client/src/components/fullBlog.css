@@ -3,6 +3,10 @@
     margin: auto;
 }
 
+.full-blog a {
+    margin-right: 10px;
+}
+
 .full-blog img {
     max-width: 500px;
     max-height: 500px;

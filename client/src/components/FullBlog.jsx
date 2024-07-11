@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -127,7 +128,10 @@ const FullBlog = () => {
                 <span><button onClick={likeHandler}>👍</button>{blog.likes}</span>
                 <span>🗨️{comments.length}</span>
             </div>
-            <p><strong>{blog.author_name}</strong> <span>{new Date(blog.date).toLocaleDateString()}</span></p>
+            <p>
+                <Link to={`/author-profile/${blog.author_id}/${blog.author_name}`}><strong>{blog.author_name}</strong></Link>
+                <span>{new Date(blog.date).toLocaleDateString()}</span>
+             </p>
             <div dangerouslySetInnerHTML={{ __html: blog.content }} />
             <div className="comment-section">
                 <h3>Comments</h3>
