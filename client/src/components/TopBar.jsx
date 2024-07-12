@@ -16,8 +16,8 @@ const TopBar = () => {
 
     const handleLogout = async () => {
         try {
-            await axios.post('/logout', {}, { withCredentials: true });
-            // await axios.post('http://localhost:3535/logout', {}, { withCredentials: true });
+            // await axios.post('/logout', {}, { withCredentials: true });
+            await axios.post('http://localhost:3535/logout', {}, { withCredentials: true });
             dispach(clearUser());
         } catch (error) {
             console.error('Failed to logout', error);

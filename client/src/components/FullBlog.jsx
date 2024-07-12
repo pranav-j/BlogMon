@@ -24,14 +24,13 @@ const FullBlog = () => {
         const fetchBlogAndComments = async () => {
             try {
                 const[blogData, commentsData] = await Promise.all([
-                    // axios.get(`http://localhost:3535/blog/${id}`),
-                    // axios.get(`http://localhost:3535/get-comments/${id}`)
+                    axios.get(`http://localhost:3535/blog/${id}`),
+                    axios.get(`http://localhost:3535/get-comments/${id}`)
 
-                    axios.get(`/blog/${id}`),
-                    axios.get(`/get-comments/${id}`)
+                    // axios.get(`/blog/${id}`),
+                    // axios.get(`/get-comments/${id}`)
                 ])
 
-                // const response = await axios.get(`http://localhost:3535/blog/${id}`);
                 setBlog(blogData.data);
                 setComments(commentsData.data);
                 setLoading(false);
@@ -49,8 +48,8 @@ const FullBlog = () => {
     const likeHandler = async() => {
         try {
             console.log('USER ID.............', user.id);
-            const response = await axios.post(`/like-blog/${id}`, { userId: user.id }, { withCredentials: true });
-            // const response = await axios.post(`http://localhost:3535/like-blog/${id}`, { userId: user.id }, { withCredentials: true });
+            // const response = await axios.post(`/like-blog/${id}`, { userId: user.id }, { withCredentials: true });
+            const response = await axios.post(`http://localhost:3535/like-blog/${id}`, { userId: user.id }, { withCredentials: true });
 
             setBlog(response.data);
             console.log(response.data);
@@ -65,8 +64,8 @@ const FullBlog = () => {
             return;
         }
         try {
-            const response = await axios.post('/add-comment',
-            // const response = await axios.post('http://localhost:3535/add-comment', 
+            // const response = await axios.post('/add-comment',
+            const response = await axios.post('http://localhost:3535/add-comment', 
             {
                 blogId: id,
                 userId: user.id,
@@ -90,8 +89,8 @@ const FullBlog = () => {
         }
 
         try {
-            const response = await axios.post('/add-coment-reply',
-            // const response = await axios.post('http://localhost:3535/add-coment-reply', 
+            // const response = await axios.post('/add-coment-reply',
+            const response = await axios.post('http://localhost:3535/add-coment-reply', 
             {
                 commentId: replyToCommentId,
                 userId: user.id,

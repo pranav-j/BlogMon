@@ -15,8 +15,8 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/login', { email, password }, { withCredentials: true });
-            // const response = await axios.post('http://localhost:3535/login', { email, password }, { withCredentials: true });
+            // const response = await axios.post('/login', { email, password }, { withCredentials: true });
+            const response = await axios.post('http://localhost:3535/login', { email, password }, { withCredentials: true });
             const { user } = response.data;
             dispach(setUser({ user }));
             navigate('/');

@@ -32,8 +32,8 @@ const CreateBlog = () => {
       formData.append('imageInsertion', file);
 
       try {
-        const response = await axios.post('/content-img-upload', formData, {
-        // const response = await axios.post('http://localhost:3535/content-img-upload', formData, {
+        // const response = await axios.post('/content-img-upload', formData, {
+        const response = await axios.post('http://localhost:3535/content-img-upload', formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
           withCredentials: true
         });
@@ -70,8 +70,8 @@ const CreateBlog = () => {
     console.log("CATEGORY", category);
     console.log("CONTENT", content);
     try {
-      await axios.post('/create-article', {
-      // await axios.post('http://localhost:3535/create-article', {
+      // await axios.post('/create-article', {
+      await axios.post('http://localhost:3535/create-article', {
         title,
         content,
         category,

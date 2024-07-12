@@ -22,8 +22,8 @@ const AuthorProfile = () => {
     useEffect(() => {
         const fetchBlogs = async() => {
             try {
-                const response = await axios.get(`/get-blogs/${authorId}`);
-                // const response = await axios.get(`http://localhost:3535/get-blogs/${authorId}`);
+                // const response = await axios.get(`/get-blogs/${authorId}`);
+                const response = await axios.get(`http://localhost:3535/get-blogs/${authorId}`);
                 setBlogs(response.data);
             } catch (error) {
                 console.error('Error fetching articles:', error);

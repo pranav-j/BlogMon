@@ -62,8 +62,8 @@ const Signup = () => {
         }
 
         try {
-            const response = await axios.post('/signup', formData, {
-            // const response = await axios.post('http://localhost:3535/signup', formData, {
+            // const response = await axios.post('/signup', formData, {
+            const response = await axios.post('http://localhost:3535/signup', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
