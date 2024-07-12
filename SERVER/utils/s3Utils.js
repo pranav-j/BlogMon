@@ -7,7 +7,8 @@ const s3 = new S3Client({
   credentials: {
     accessKeyId: process.env.accessKeyId,
     secretAccessKey: process.env.secretAccessKey
-  }
+  },
+  region: 'ap-south-1' // e.g., 'us-west-2'
 });
 
 // Check file type

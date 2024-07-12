@@ -20,15 +20,15 @@ const HomePage = () => {
     try {
       let url = '';
       if(searchTerm) {
-        // url = `/search-blogs?query=${searchTerm}`;
-        url = `http://localhost:3535/search-blogs?query=${searchTerm}`;
+        url = `/search-blogs?query=${searchTerm}`;
+        // url = `http://localhost:3535/search-blogs?query=${searchTerm}`;
       } else {
-        // let url = `/get-blogs`;
-        url = "http://localhost:3535/get-blogs";
+         url = `/get-blogs`;
+        // url = "http://localhost:3535/get-blogs";
 
         if(selectedCategory !== 'For you') {
-          // url = `/get-blogs-by-category/${selectedCategory}`;
-          url = `http://localhost:3535/get-blogs-by-category/${selectedCategory}`;
+          url = `/get-blogs-by-category/${selectedCategory}`;
+          // url = `http://localhost:3535/get-blogs-by-category/${selectedCategory}`;
         }
       }
       const response = await axios.get(url);
@@ -40,8 +40,8 @@ const HomePage = () => {
 
   const fetchSideBarData = async () => {
     try {
-      // const response = await axios.get('/sidebar-data', { withCredentials: true });
-      const response = await axios.get('http://localhost:3535/sidebar-data', { withCredentials: true });
+      const response = await axios.get('/sidebar-data', { withCredentials: true });
+      // const response = await axios.get('http://localhost:3535/sidebar-data', { withCredentials: true });
       setSideBarData(response.data);
     } catch (error) {
       console.error('Error fetching sidebar data:', error);

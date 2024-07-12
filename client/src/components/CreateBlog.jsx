@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 
 import 'react-quill/dist/quill.snow.css';
 import './createBlog.css';
+import { useNavigate } from 'react-router-dom';
 
 const CreateBlog = () => {
   const [title, setTitle] = useState('');
@@ -15,6 +16,7 @@ const CreateBlog = () => {
   const [category, setCategory] = useState('');
   const [error, setError] = useState(null);
   const quillRef = useRef(null);
+  const navigate = useNavigate();
 
   const user = useSelector((state) => state.auth.user);
 
@@ -30,8 +32,8 @@ const CreateBlog = () => {
       formData.append('imageInsertion', file);
 
       try {
-        // const response = await axios.post('/content-img-upload', formData, {
-        const response = await axios.post('http://localhost:3535/content-img-upload', formData, {
+        const response = await axios.post('/content-img-upload', formData, {
+        // const response = await axios.post('http://localhost:3535/content-img-upload', formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
           withCredentials: true
         });
@@ -68,8 +70,8 @@ const CreateBlog = () => {
     console.log("CATEGORY", category);
     console.log("CONTENT", content);
     try {
-      // await axios.post('/create-article', {
-      await axios.post('http://localhost:3535/create-article', {
+      await axios.post('/create-article', {
+      // await axios.post('http://localhost:3535/create-article', {
         title,
         content,
         category,
@@ -80,7 +82,7 @@ const CreateBlog = () => {
       setTitle('');
       setContent('');
       setCategory('');
-
+      navigate('/profile');
     } catch (error) {
       setError('Failed to create article');
     }

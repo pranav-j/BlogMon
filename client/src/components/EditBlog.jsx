@@ -4,6 +4,7 @@ import ReactQuill from 'react-quill';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
+import TopBar from "./TopBar";
 import 'react-quill/dist/quill.snow.css'
 import './editBlog.css';
 import './createBlog.css';
@@ -22,8 +23,8 @@ const EditBlog = () =>{
     useEffect(() => {
         const fetchBlog = async() => {
             try {
-                const response = await axios.get(`http://localhost:3535/blog/${id}`);
-                // const response = await axios.get(`/blog/${id}`);
+                // const response = await axios.get(`http://localhost:3535/blog/${id}`);
+                const response = await axios.get(`/blog/${id}`);
                 const { title, content, category } = response.data;
                 setTitle(title);
                 setContent(content);
@@ -48,8 +49,8 @@ const EditBlog = () =>{
           formData.append('image', file);
     
           try {
-            // const response = await axios.post('/content-img-upload', formData, {
-            const response = await axios.post('http://localhost:3535/content-img-upload', formData, {
+            const response = await axios.post('/content-img-upload', formData, {
+            // const response = await axios.post('http://localhost:3535/content-img-upload', formData, {
               headers: { 'Content-Type': 'multipart/form-data' },
               withCredentials: true
             });
@@ -82,8 +83,8 @@ const EditBlog = () =>{
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-          // await axios.put(`/edit-blog/${id}`, {
-          await axios.put(`http://localhost:3535/edit-blog/${id}`, {
+          await axios.put(`/edit-blog/${id}`, {
+          // await axios.put(`http://localhost:3535/edit-blog/${id}`, {
             title,
             content,
             category,
@@ -98,6 +99,8 @@ const EditBlog = () =>{
       };
 
       return (
+        <>
+        <TopBar />
         <div className="create-blog">
           <h2>Edit Article</h2>
           {error && <p className="error">{error}</p>}
@@ -126,6 +129,7 @@ const EditBlog = () =>{
             <button type="submit">Update Article</button>
           </form>
         </div>
+        </>
       );
 };
 

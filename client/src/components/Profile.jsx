@@ -23,8 +23,8 @@ const Profile = () => {
     useEffect(() => {
         const fetchBlogs = async() => {
             try {
-                // const response = await axios.get(`/get-blogs/${author.id}`);
-                const response = await axios.get(`http://localhost:3535/get-blogs/${author.id}`);
+                const response = await axios.get(`/get-blogs/${author.id}`);
+                // const response = await axios.get(`http://localhost:3535/get-blogs/${author.id}`);
                 setBlogs(response.data);
             } catch (error) {
                 console.error('Error fetching articles:', error);
@@ -44,8 +44,8 @@ const Profile = () => {
 
     const handleDelete = async () => {
         try {
-            // const deleted = await axios.delete(`/blog/${blogToDelete}`,
-            const deleted = await axios.delete(`http://localhost:3535/blog/${blogToDelete}`,
+            const deleted = await axios.delete(`/blog/${blogToDelete}`,
+            // const deleted = await axios.delete(`http://localhost:3535/blog/${blogToDelete}`,
                 {
                     withCredentials: true
                 }
