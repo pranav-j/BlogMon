@@ -1,0 +1,161 @@
+.admin-panel {
+    margin: 0 auto;
+    border: solid 1px #F2F2F2;
+    max-width: 1336px;
+}
+
+.main-container {
+    display: flex;
+}
+
+.tabs {
+    display: flex;
+    height: 50px;
+    align-items: center;
+    overflow-x: auto;
+    white-space: nowrap;
+    gap: 10px;
+}
+
+
+
+.tabs button {
+    padding: 13px 25px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+}
+
+.tabs button.active {
+    font-weight: bold;
+    border-bottom: 2px solid black;
+    background-color: black;
+    color: white;
+}
+
+.blog-list, .user-list {
+    max-width: 900px;
+    margin-left: 0px;
+    /* border-right: solid 1px #F2F2F2; */
+    max-width: 1336px;
+}
+
+.blog-wrapper, .user-wrapper {
+    margin-bottom: 20px;
+    border-bottom: solid 1px #F2F2F2;
+}
+
+.user-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: white;
+    text-align: center;
+}
+
+.user-card img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.user-info {
+    margin-top: 10px;
+}
+
+.user-info h3 {
+    margin: 10px 0 5px;
+}
+
+.user-info p {
+    margin: 5px 0;
+}
+
+
+
+.blog-actions {
+    display: flex;
+    margin-right: 30px;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+.tab-selector {
+    border-bottom: solid 1px #F2F2F2;
+    padding-bottom: 20px;
+    padding-left: 30px;
+}
+
+/* ----------------------------------------------- */
+
+
+    /* border-bottom: solid 1px #F2F2F2; */
+
+
+
+/* .blog-actions button {
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    color: black;
+    border: none;
+    border-radius: 5px;
+} */
+
+/* .blog-actions button:hover {
+    background-color: black;
+    color: white;
+} */
+
+/* .blog-actions button.delete {
+    background-color: #dc3545;
+} */
+
+/* .blog-actions button.delete:hover {
+    background-color: #c82333;
+} */
+
+/* .user-info button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+} */
+
+/* .user-info button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+} */
+
+/* .blog-actions button {
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    color: black;
+    border: none;
+    border-radius: 5px;
+} */
+
+/* .blog-actions button:hover {
+    background-color: black;
+    color: white;
+} */
+
+/* .blog-actions button.delete {
+    background-color: #dc3545;
+} */
+
+/* .blog-actions button.delete:hover {
+    background-color: #c82333;
+} */

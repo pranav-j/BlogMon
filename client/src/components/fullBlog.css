@@ -10,6 +10,9 @@
 .full-blog img {
     max-width: 500px;
     max-height: 500px;
+    /* text-align: center; */
+    display: block;
+    margin: 0 auto;
 }
 
 .full-blog h1 {

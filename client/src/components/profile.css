@@ -1,6 +1,7 @@
 .profile {
     max-width: 1360px;
     margin: auto;
+    border: solid 1px #F2F2F2;
 }
 
 .blog-wrapper {

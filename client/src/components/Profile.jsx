@@ -92,6 +92,6 @@ const Profile = () => {
             <DeleteModal isOpen={isDeleteModalOpen} onClose={closeDeleteModal} onConfirm={handleDelete}/>
         </div>
     )
-}
+};
 
 export default Profile;

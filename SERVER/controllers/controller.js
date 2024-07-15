@@ -86,7 +86,7 @@ const login = async(req, res) => {
 
         console.log(`${user._id} Logged in...............`);
         res.cookie('token', token, { httpOnly: true });
-        res.json({ user: { id: user._id, name: user.name, email: user.email } });
+        res.json({ user: { id: user._id, name: user.name, email: user.email, isAdmin:user.isAdmin } });
     } catch (error) {
         console.log('Login failed...............');
         res.status(500).json({ error: 'Failed to login' });

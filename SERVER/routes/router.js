@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const { getAllUsers, deleteBlogAdmin, suspendUser } = require('../controllers/adminController.js');
+
 // const { getBlogs, getBlogsByAuthor, getBlogsByCategory, deleteBlog, likeBlog, addComment, addComentReply, getComments, getBlogById, uploadBlogImage, upload, createBlog, editBlog, signup, login } = require('../controllers/controller.js');
 
 const { 
@@ -23,7 +25,9 @@ const {
     searchBlogs,
 } = require('../controllers/controller.js');
 
-const { userAuth } = require('../middlewares/userAuth.js')
+const { userAuth } = require('../middlewares/userAuth.js');
+
+const { adminAuth } = require('../middlewares/adminAuth.js');
 
 const { validateLogin, validateSignup, validateBlog, validateAddComment, validateAddCommentReply } = require('../middlewares/validators.js')
 
@@ -31,7 +35,6 @@ const { upload } = require('../utils/s3Utils.js');
 
 router.get('/get-blogs', getBlogs);
 
-// router.get('/sidebar-data', userAuth, getSideBarData);       //For testing userAuth
 router.get('/sidebar-data', getSideBarData);
 
 router.get('/get-blogs/:author_id', getBlogsByAuthor);
@@ -63,5 +66,13 @@ router.post('/login', validateLogin, login);
 router.post('/logout', logout);
 
 router.get('/search-blogs', searchBlogs)
+
+// ADMIN --------------------------------------------
+
+router.get('/admin/users', adminAuth, getAllUsers);
+
+router.delete('/admin/blog/:id', adminAuth, deleteBlogAdmin);
+
+router.put('/admin/suspend-user/:id', adminAuth, suspendUser);
 
 module.exports = router;

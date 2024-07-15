@@ -5,6 +5,8 @@
     max-width: 900px;
     /* height: 150px; */
     overflow: hidden;
+    border-bottom: solid 1px #F2F2F2;
+
 }
 
 .meta {
@@ -41,4 +43,10 @@
 .card-content a {
     text-decoration: none;
     color: inherit;
+}
+
+.card-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

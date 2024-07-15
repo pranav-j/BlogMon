@@ -51,11 +51,7 @@ const TopBar = () => {
                     />
                     <button type="submit">🔍</button>
                 </form>
-                {/* <div className="search-bar">
-                    <input type="text" name="" id="" placeholder="Search..."/>
-                    <button type="submit">🔍</button>
-                </div> */}
-                <div>
+                {/* <div>
                     {user ? (
                         <>
                         <Link to="/create-blog">Write</Link>
@@ -69,6 +65,28 @@ const TopBar = () => {
                         </>
                     )}
 
+                </div> */}
+                <div>
+                    {user ? (
+                        <>
+                        {user.isAdmin ? (
+                            <>
+                            <Link to="/admin-panel">Admin Panel</Link>
+                            </>
+                        ) : (
+                            <>
+                            <Link to="/create-blog">Write</Link>
+                            <Link to="/profile">Profile</Link>
+                            </>
+                        )}
+                        <button onClick={handleLogout}>Logout</button>
+                        </>
+                    ) : (
+                        <>
+                        <Link to="/login">Login</Link>
+                        <Link to="/signup">Signup</Link>
+                        </>
+                    )}
                 </div>
             </nav>
         </header>
