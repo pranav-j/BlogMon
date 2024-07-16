@@ -1,3 +1,13 @@
+.full-blog-page {
+    max-width: 1336px;
+    margin: auto;
+    border: solid 1px #F2F2F2;
+}
+
+.meta button {
+    margin-right: 10px;
+}
+
 .full-blog {
     max-width: 900px;
     margin: auto;
@@ -5,6 +15,10 @@
 
 .full-blog a {
     margin-right: 10px;
+}
+
+.full-blog a:hover {
+    text-decoration: none;
 }
 
 .full-blog img {
@@ -24,11 +38,11 @@
 }
 
 .replys {
-    margin-left: 30px;
+    margin-left: 60px;
 }
 
 .add-reply {
-    margin-left: 30px;
+    margin-left: 60px;
 }
 
 .add-comment textarea {

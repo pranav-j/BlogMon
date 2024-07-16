@@ -119,13 +119,13 @@ const FullBlog = () => {
     }
     // console.log(blog);
     return (
-        <>
+        <div className="full-blog-page">
         <TopBar />
         <div className="full-blog">
             <h1>{blog.title}</h1>
             <div className="meta">
                 <span><button onClick={likeHandler}>👍</button>{blog.likes}</span>
-                <span>🗨️{comments.length}</span>
+                <span>🗨️ {comments.length}</span>
             </div>
             <p>
                 <Link to={`/author-profile/${blog.author_id}/${blog.author_name}`}><strong>{blog.author_name}</strong></Link>
@@ -168,7 +168,7 @@ const FullBlog = () => {
 
             </div>
         </div>
-        </>
+        </div>
     )
 }
 

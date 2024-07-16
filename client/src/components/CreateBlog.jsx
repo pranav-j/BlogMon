@@ -89,7 +89,7 @@ const CreateBlog = () => {
   };
 
   return (
-    <>
+    <div className="create-blog-page">
       <TopBar />
       <div className="create-blog">
         <h2>Create a New Blog</h2>
@@ -119,7 +119,7 @@ const CreateBlog = () => {
           <button type="submit">Create Article</button>
         </form>
       </div>
-    </>
+    </div>
   );
 };
 

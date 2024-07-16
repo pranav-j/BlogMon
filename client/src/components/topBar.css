@@ -4,6 +4,11 @@
     padding: 10px 20px;
     background-color: white;
     border-bottom: solid 1px #F2F2F2;
+    max-width: 1336px;      /* Removing this will help */
+}
+
+.top-bar a:hover {
+    text-decoration: none;
 }
 
 .top-bar img {
@@ -43,18 +48,19 @@ nav a {
 }
   
 .search-bar input {
-    padding: 5px;
+    padding: 6px;
     border: 1px solid gray;
-    border-radius: 4px;
+    border-radius: 15px;
     margin-right: 5px;
 }
   
 .search-bar button {
-    padding: 5px 10px;
-    border: none;
-    background-color: #3b3b3b;
+    padding: 4px 10px;
+    /* border: none; */
+    /* background-color: #3b3b3b; */
+    /* border-color: black; */
     color: white;
-    border-radius: 4px;
+    border-radius: 15px;
     cursor: pointer;
 }
 

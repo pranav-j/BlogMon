@@ -4,6 +4,10 @@
     border: solid 1px #F2F2F2;
 }
 
+.profile a:hover {
+    text-decoration: none;
+}
+
 .blog-wrapper {
     display: flex;
     /* align-items: center; */

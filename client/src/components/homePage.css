@@ -2,6 +2,10 @@
   margin: 0 auto;
 }
 
+.home-page a:hover {
+  text-decoration: none;
+}
+
 .home-page {
   border: solid 1px #F2F2F2;
   max-width: 1336px;

@@ -1,3 +1,10 @@
+.create-blog-page {
+    max-width: 1336px;
+    margin: auto;
+    border: solid 1px #F2F2F2;
+    height: 100vh;
+}
+
 .create-blog {
     padding: 20px;
     max-width: 1700px;

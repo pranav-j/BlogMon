@@ -85,7 +85,7 @@ const AdminPanel = () => {
 
     const handleSuspendUser = async (userId) => {
         try {
-            const response = await axios.put(`http://localhost:3535/suspend-user/${userId}`, {}, { withCredentials: true });
+            const response = await axios.put(`http://localhost:3535/admin/suspend-user/${userId}`, {}, { withCredentials: true });
             if (response.status === 200) {
                 setUsers(users.map(user => user._id === userId ? { ...user, suspended: true } : user));
             }
