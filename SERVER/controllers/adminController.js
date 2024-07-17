@@ -33,7 +33,7 @@ const suspendUser = async(req, res) => {
 
         user.isSuspended = !user.isSuspended;
         await user.save();
-        console.log('User suspended...............');
+        console.log(`User ${id} suspend status ${user.isSuspended}...............`);
         res.status(200).json({ message: 'User suspension status updated' });
     } catch (error) {
         console.log('Failed to suspend user by ADMIN...............');

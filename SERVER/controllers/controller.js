@@ -93,15 +93,20 @@ const login = async(req, res) => {
     }
 };
 
+// LOGOUT------------------------------------------------------------------------------------------------
+
 const logout = (req, res) => {
   res.clearCookie('token');
   res.json({ message: 'Logged out successfully' });
 };
 
+// GET SIDEBAR DATA------------------------------------------------------------------------------------------------
+
 const getSideBarData = async(req, res) => {
   try {
+
     // const editorsPicks = await Blog.aggregate([
-    //   { $sort: {date: -1} },
+    //   { $sort: { date: -1 } },
     //   { $limit: 3 },
     //   { 
     //     $lookup: {
@@ -118,15 +123,48 @@ const getSideBarData = async(req, res) => {
     //       title: 1,
     //       author: '$author.name',
     //       author_id: '$author._id',
-    //       image: { $ifNull: ['$author.profilePic', 'https://robohash.org/you.png?set=set5']}
+    //       image: {
+    //         $cond: {
+    //           if: { $or: [{ $eq: ['$author.profilePic', null] }, { $eq: ['$author.profilePic', ''] }, { $not: ['$author.profilePic'] }] },
+    //           then: 'https://robohash.org/you.png?set=set5',
+    //           else: '$author.profilePic'
+    //         }
+    //       }
     //     }
-    //   }      
+    //   }
     // ]);
+    
+
+    // const recommendedTopics = [
+    //   'Data Science',
+    //   'Self Improvement',
+    //   'Writing',
+    //   'Relationships',
+    //   'Cryptocurrency',
+    //   'Productivity'
+    // ];
+
+    // let whoToFollow = await User.find()
+    // .sort({ createdAt: -1 })
+    // .limit(2)
+    // .select('_id name bio profilePic');
+
+    // whoToFollow = whoToFollow.map(user => ({
+    //   ...user._doc,
+    //   profilePic: user.profilePic || 'https://robohash.org/you.png?set=set5'
+    // }));
+
+    // const sideBarData = {
+    //   editorsPicks,
+    //   recommendedTopics,
+    //   whoToFollow
+    // };
+
 
     const editorsPicks = await Blog.aggregate([
       { $sort: { date: -1 } },
       { $limit: 3 },
-      { 
+      {
         $lookup: {
           from: 'uzers',
           localField: 'author_id',
@@ -135,6 +173,7 @@ const getSideBarData = async(req, res) => {
         }
       },
       { $unwind: '$author' },
+      { $match: { 'author.isSuspended': { $ne: true } } }, // Exclude blogs by suspended users
       {
         $project: {
           id: '$_id',
@@ -151,7 +190,6 @@ const getSideBarData = async(req, res) => {
         }
       }
     ]);
-    
 
     const recommendedTopics = [
       'Data Science',
@@ -162,11 +200,10 @@ const getSideBarData = async(req, res) => {
       'Productivity'
     ];
 
-    // const whoToFollow = await User.find().sort({ createdAt: -1 }).limit(2);
-    let whoToFollow = await User.find()
-    .sort({ createdAt: -1 })
-    .limit(2)
-    .select('_id name bio profilePic');
+    let whoToFollow = await User.find({ isSuspended: { $ne: true } }) // Exclude suspended users
+      .sort({ createdAt: -1 })
+      .limit(2)
+      .select('_id name bio profilePic');
 
     whoToFollow = whoToFollow.map(user => ({
       ...user._doc,
@@ -178,6 +215,7 @@ const getSideBarData = async(req, res) => {
       recommendedTopics,
       whoToFollow
     };
+
 
     res.status(200).json(sideBarData);
   } catch (error) {
@@ -239,66 +277,7 @@ const getSideBarData = async(req, res) => {
 // };
 
 // -------------------------------------------------------------------------------------------------------------
-// S3 SETUP-----------------------------------------------------------------------------------------------------
 
-// const s3 = new S3Client({
-//   credentials: {
-//     accessKeyId: process.env.accessKeyId,
-//     secretAccessKey: process.env.secretAccessKey
-//   }
-// })
-
-// const storage = multer.memoryStorage();
-// const upload = multer({
-//   storage: storage,
-//   fileFilter: (req, file, cb) => {
-//     checkFileType(file, cb);
-//   }
-// });
-
-// // Check file type
-// function checkFileType(file, cb) {
-//   const filetypes = /jpeg|jpg|png|gif/;
-//   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-//   const mimetype = filetypes.test(file.mimetype);
-
-//   if (mimetype && extname) {
-//     return cb(null, true);
-//   } else {
-//     cb('Error: Images Only!');
-//   }
-// };
-
-
-// // Generate unique file name
-// function generateUniqueFileName(originalName) {
-//   const ext = path.extname(originalName);
-//   const baseName = path.basename(originalName, ext);
-//   const uniqueSuffix = crypto.randomBytes(8).toString('hex');
-//   return `${baseName}-${uniqueSuffix}${ext}`;
-// }
-
-// UPLOAD IMAGE IN BLOG
-// const uploadImage = async (req, res) => {
-//   try {
-//     const uniqueFileName = generateUniqueFileName(req.file.originalname);
-//     const params = {
-//       Bucket: 'blog-images-kidiloski',
-//       Key: `blog-image-embedings/${uniqueFileName}`,
-//       Body: req.file.buffer,
-//       ContentType: req.file.mimetype
-//     };
-
-//     const uploadImgToS3Command = new PutObjectCommand(params);
-//     await s3.send(uploadImgToS3Command);
-
-//     const imageUrl = `https://${params.Bucket}.s3.ap-south-1.amazonaws.com/${params.Key}`;
-//     res.status(200).json({ url: imageUrl });
-//   } catch (err) {
-//     console.error('Error uploading image:', err);
-//     res.status(500).json({ error: 'Failed to upload image' });
-//   }
-// };
 
 // UPLOAD IMAGE IN BLOG USING S3------------------------------------------------------------------------------------------------
 
@@ -362,28 +341,59 @@ const editBlog = async (req, res) => {
 
 const getBlogs = async (req, res) => {
     try {
-        // const blogs = await Blog.find();
 
-        const blogs = await Blog.aggregate([
-          {
-              $lookup: {
-                  from: 'comments', // Name of the comments collection
-                  localField: '_id',
-                  foreignField: 'blogId',
-                  as: 'comments'
-              }
-          },
-          {
-              $addFields: {
-                  commentsCount: { $size: '$comments' }
-              }
-          },
-          {
-              $project: {
-                  comments: 0 // Exclude the comments array
-              }
-          }
-      ]);
+      //   const blogs = await Blog.aggregate([
+      //     {
+      //         $lookup: {
+      //             from: 'comments',
+      //             localField: '_id',
+      //             foreignField: 'blogId',
+      //             as: 'comments'
+      //         }
+      //     },
+      //     {
+      //         $addFields: {
+      //             commentsCount: { $size: '$comments' }
+      //         }
+      //     },
+      //     {
+      //         $project: {
+      //             comments: 0 // Exclude the comments array
+      //         }
+      //     }
+      // ]);
+
+      const blogs = await Blog.aggregate([
+        {
+            $lookup: {
+                from: 'uzers',
+                localField: 'author_id',
+                foreignField: '_id',
+                as: 'author'
+            }
+        },
+        { $unwind: '$author' },
+        { $match: { 'author.isSuspended': { $ne: true } } }, // Exclude blogs by suspended users
+        {
+            $lookup: {
+                from: 'comments',
+                localField: '_id',
+                foreignField: 'blogId',
+                as: 'comments'
+            }
+        },
+        {
+            $addFields: {
+                commentsCount: { $size: '$comments' }
+            }
+        },
+        {
+            $project: {
+                comments: 0, // Exclude the comments array
+                'author.password': 0 // Exclude password field
+            }
+        }
+    ]);
 
         console.log('Home page rendered...............');
         res.status(200).json(blogs);
@@ -446,7 +456,39 @@ const deleteBlog = async (req, res) => {
 const getBlogsByCategory = async (req, res) => {
   const { category } = req.params;
   try {
-    const blogs = await Blog.find({ category: category });
+    // const blogs = await Blog.find({ category: category });
+    const blogs = await Blog.aggregate([
+      { $match: { category: category } },
+      {
+          $lookup: {
+              from: 'uzers', // Make sure this matches your collection name
+              localField: 'author_id',
+              foreignField: '_id',
+              as: 'author'
+          }
+      },
+      { $unwind: '$author' },
+      { $match: { 'author.isSuspended': { $ne: true } } }, // Exclude blogs by suspended users
+      {
+          $lookup: {
+              from: 'comments', // Name of the comments collection
+              localField: '_id',
+              foreignField: 'blogId',
+              as: 'comments'
+          }
+      },
+      {
+          $addFields: {
+              commentsCount: { $size: '$comments' }
+          }
+      },
+      {
+          $project: {
+              comments: 0, // Exclude the comments array
+              'author.password': 0 // Exclude password field
+          }
+      }
+  ]);
     console.log(`${category} blogs fetched...............`);
     res.status(200).json(blogs);
   } catch (error) {
@@ -555,9 +597,43 @@ const getComments = async(req, res) => {
 const searchBlogs = async(req, res) => {
   const { query } = req.query;
   try {
-    const searchResults = await Blog.find({
-      $text:{ $search: query}
-    });
+    // const searchResults = await Blog.find({
+    //   $text:{ $search: query}
+    // });
+
+    const searchResults = await Blog.aggregate([
+      { $match: { $text: { $search: query } } },
+      {
+          $lookup: {
+              from: 'uzers', // Make sure this matches your collection name
+              localField: 'author_id',
+              foreignField: '_id',
+              as: 'author'
+          }
+      },
+      { $unwind: '$author' },
+      { $match: { 'author.isSuspended': { $ne: true } } }, // Exclude blogs by suspended users
+      {
+          $lookup: {
+              from: 'comments', // Name of the comments collection
+              localField: '_id',
+              foreignField: 'blogId',
+              as: 'comments'
+          }
+      },
+      {
+          $addFields: {
+              commentsCount: { $size: '$comments' }
+          }
+      },
+      {
+          $project: {
+              comments: 0, // Exclude the comments array
+              'author.password': 0 // Exclude password field
+          }
+      }
+  ]);
+
     console.log(`Searched for ${query}...............`);
     res.status(200).json(searchResults);
   } catch (error) {

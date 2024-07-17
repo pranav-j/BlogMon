@@ -17,7 +17,7 @@ import './adminPanel.css';
 import TopBar from "./TopBar";
 import ArticleCard from './ArticleCard';
 import DeleteModal from './DeleteModal';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const AdminPanel = () => {
@@ -28,7 +28,7 @@ const AdminPanel = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [blogToDelete, setBlogToDelete] = useState(null);
     const [selectedTab, setSelectedTab] = useState('blogs'); // Default tab
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     useEffect(() => {
         const fetchBlogs = async() => {
@@ -57,9 +57,6 @@ const AdminPanel = () => {
         }
     }, [admin]);
 
-    // const handleEdit = (blogId) => {
-    //     navigate(`/edit-blog/${blogId}`);
-    // };
 
     const handleDelete = async () => {
         try {
@@ -87,7 +84,8 @@ const AdminPanel = () => {
         try {
             const response = await axios.put(`http://localhost:3535/admin/suspend-user/${userId}`, {}, { withCredentials: true });
             if (response.status === 200) {
-                setUsers(users.map(user => user._id === userId ? { ...user, suspended: true } : user));
+                // setUsers(users.map(user => user._id === userId ? { ...user, suspended: true } : user));
+                setUsers(users.map(user => user._id === userId ? { ...user, isSuspended: !user.isSuspended } : user));
             }
         } catch (error) {
             console.error('Error suspending user:', error);
@@ -132,8 +130,14 @@ const AdminPanel = () => {
                                     <h3>{user.name}</h3>
                                     <p>{user.bio}</p>
                                     <p>{user.email}</p>
-                                    <button onClick={() => handleSuspendUser(user._id)} disabled={user.suspended}>
+                                    {/* <button onClick={() => handleSuspendUser(user._id)} disabled={user.suspended}>
                                         {user.suspended ? 'Suspended' : 'Suspend User'}
+                                    </button> */}
+                                    <button
+                                        onClick={() => handleSuspendUser(user._id)}
+                                        className={user.isSuspended ? 'reinstate-button' : 'suspend-button'}
+                                    >
+                                        {user.isSuspended ? 'Reinstate User' : 'Suspend User'}
                                     </button>
                                 </div>
                             </div>
