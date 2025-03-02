@@ -13,6 +13,7 @@ const adminAuth = async(req, res, next) => {
 
         if(user.isAdmin===true) {
             console.log(`It\'s the ADMIN...............`);
+            req.user = user;
             next();
         } else {
             console.log('Intruder trying to access ADMIN routes...............');

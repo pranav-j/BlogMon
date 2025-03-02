@@ -37,20 +37,6 @@ const Signup = () => {
         }
     };
 
-    // return (
-    //     <div className='signup'>
-    //         <form onSubmit={handleSubmit}>
-    //             <h1>SignUp</h1>
-    //             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
-    //             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
-    //             <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" required />
-    //             <textarea value={bio} onChange={(e) => setBio(e.target.value)} placeholder="Bio" required />
-    //             <input type="file" onChange={(e) => setProfilePic(e.target.files[0])} accept="image/*" />
-    //             <button type="submit">Signup</button>
-    //         </form>
-    //     </div>
-    // );
-
     return (
         <div className="signup-container">
             <div className="signup-form">

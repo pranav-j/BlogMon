@@ -16,7 +16,7 @@ app.use(cookieParser());
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
 // this is required if you haven't set the proxy port in react to the port at 
-// which server is running (port 3000 is the default port foe react)
+// which server is running (port 3000 is the default port for react)
 
 app.use(routes);
 

@@ -1,19 +1,22 @@
-const multer = require('multer');
+// const multer = require('multer');
 const bcrypt = require('bcryptjs');
 const jwt =  require('jsonwebtoken');
-const path = require('path');
-const env = require('dotenv');
-const crypto = require('crypto');
+// const path = require('path');
+// const env = require('dotenv');
+// const crypto = require('crypto');
+
+const Redis = require('ioredis');
+const redis = new Redis();
 
 // const aws = require('aws-sdk');
 // const multerS3 = require('multer-s3');
-const { PutObjectCommand, S3Client } = require('@aws-sdk/client-s3');
+// const { PutObjectCommand, S3Client } = require('@aws-sdk/client-s3');
 const { uploadFileToS3 } = require('../utils/s3Utils');
 
 const { Blog } = require('../models/BlogModel');
 const User = require('../models/UserModel');
 const Comment = require('../models/CommentModel');
-const { title } = require('process');
+// const { title } = require('process');
 
 // SIGNUP------------------------------------------------------------------------------------------------
 
@@ -104,6 +107,14 @@ const logout = (req, res) => {
 
 const getSideBarData = async(req, res) => {
   try {
+
+    const sideBarCacheKey = 'sideBarData';
+    const cachedSideBarData = await redis.get(sideBarCacheKey);
+
+    if(cachedSideBarData) {
+      console.log('Serving sidebar data from CACHE...............');
+      return res.status(200).json(JSON.parse(cachedSideBarData));
+    }
 
     // const editorsPicks = await Blog.aggregate([
     //   { $sort: { date: -1 } },
@@ -216,7 +227,7 @@ const getSideBarData = async(req, res) => {
       whoToFollow
     };
 
-
+    await redis.set(sideBarCacheKey, JSON.stringify(sideBarData), 'EX', 3600);
     res.status(200).json(sideBarData);
   } catch (error) {
     console.error('Error fetching sidebar data:', error);
@@ -309,6 +320,11 @@ const createBlog = async (req, res) => {
       });
       await newArticle.save();
       console.log('New Blog added...............');
+
+      await redis.del('allBlogs'); // Invalidate cache
+      await redis.del('sideBarData');
+      console.log('Cache INVALIDATED...............');
+
       res.status(201).json(newArticle);
     } catch (error) {
       console.error('Error saving the article:', error);
@@ -328,6 +344,9 @@ const editBlog = async (req, res) => {
         { new: true }
       );
       console.log(`Blog ${id} updated...............`);
+      await redis.del('allBlogs'); // Invalidate cache
+      await redis.del('sideBarData');
+      console.log('Cache INVALIDATED...............');
       res.status(200).json(editedBlog);
     } catch (error) {
       console.error('Error updating the blog:', error);
@@ -341,6 +360,14 @@ const editBlog = async (req, res) => {
 
 const getBlogs = async (req, res) => {
     try {
+      const blogCacheKey = 'allBlogs';
+      const cashedBlogs = await redis.get(blogCacheKey);
+
+      if(cashedBlogs) {
+        // console.log('cashedBlogs...............', cashedBlogs);
+        console.log('Serving blogs from CACHE...............');
+        return res.status(200).json(JSON.parse(cashedBlogs));
+      }
 
       //   const blogs = await Blog.aggregate([
       //     {
@@ -396,6 +423,7 @@ const getBlogs = async (req, res) => {
     ]);
 
         console.log('Home page rendered...............');
+        await redis.set(blogCacheKey, JSON.stringify(blogs), 'EX', 3600);
         res.status(200).json(blogs);
     } catch (error) {
         console.error('Error getting the articles:', error);
@@ -443,6 +471,11 @@ const deleteBlog = async (req, res) => {
     const deleted = await Blog.findByIdAndDelete(id);
     if(deleted) {
       console.log(`${id} Blog deleted...............`);
+
+      await redis.del('allBlogs'); // Invalidate cache
+      await redis.del('sideBarData');
+      console.log('Cache INVALIDATED...............');
+
       res.status(200).json({ message: 'Blog deleted successfully' });
     }
   } catch (error) {
@@ -526,6 +559,11 @@ const likeBlog = async (req, res) => {
     // blog.likes += 1;
     // console.log(`Blog ${id} liked...............`);
     await blog.save();
+
+    await redis.del('allBlogs'); // Invalidate cache
+    await redis.del('sideBarData');
+    console.log('Cache INVALIDATED...............');
+
     res.status(200).json(blog);
   } catch (error) {
     console.error('Error liking the blog:', error);
@@ -546,6 +584,11 @@ const addComment = async (req, res) => {
       date: new Date()
     });
     await newComment.save();
+
+    await redis.del('allBlogs'); // Invalidate cache
+    await redis.del('sideBarData');
+    console.log('Cache INVALIDATED...............');
+
     console.log(`Comment added on ${blogId} by ${userId} ${userName}...............`);
     res.status(200).json(newComment);
   } catch (error) {
